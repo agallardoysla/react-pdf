@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useState,useEffect} from 'react';
 import ReactPDF, {
 	Page,
 	Text,
@@ -47,6 +47,13 @@ const Plantilla2 = ({ Plantilla, curriculum }) => {
 
 // Create Document Component
 const MyDocument = ({ type = 'blob', Plantilla, curriculum }) => {
+	const [isClient, setIsClient] = useState(false)
+
+	useEffect(() => {
+	  setIsClient(true)
+	}, [])
+
+
 	if (type != 'blob') {
 		return (
 			<BlobProvider style={{}} document={<Plantilla2 Plantilla={Plantilla} />} fileName="somename.pdf">
@@ -57,7 +64,9 @@ const MyDocument = ({ type = 'blob', Plantilla, curriculum }) => {
 		);
 	} else {
 		return (
-			<PDFDownloadLink
+			<>
+			{
+				isClient && 	<PDFDownloadLink
 				style={{}}
 				document={<Plantilla2 curriculum={curriculum} Plantilla={Plantilla} />}
 				fileName="somename.pdf"
@@ -66,6 +75,9 @@ const MyDocument = ({ type = 'blob', Plantilla, curriculum }) => {
 					return <DescargarBoton url={url} />;
 				}}
 			</PDFDownloadLink>
+			}
+			</>
+		
 		);
 	}
 };
